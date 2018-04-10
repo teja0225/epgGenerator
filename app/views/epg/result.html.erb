@@ -1,0 +1,42 @@
+<div class="center jumbotron">
+  <div class="row">
+  <% if @error == "metafile" %>
+  <div class="col-md-6 col-md-offset-3">
+  <h2> Missing Meta </h2>
+	<table>
+	<thead>
+	    <tr>
+	     <th>Title</th>
+	     <th>Season</th>
+	     <th>Episode</th>
+	    </tr>
+	  </thead>
+	 <tbody>
+	  <% @rowarraydisp.shift %>
+	  <% @rowarraydisp.each do |row| %>
+	    <tr>
+	     <td><%= row[0] %></td>
+	     <td><%= row[1] %></td>
+	     <td><%= row[2] %></td>
+	    </tr>
+	  <% end %>
+	 </tbody>
+	</table>
+	<%= form_for :epg do |form| %>
+	  	<%= form.submit "Download missing meta file", name:"submit" ,class: "btn btn-primary" %>
+	<% end %>
+	<%= form_for :epg do |form| %>
+	  <%= form.submit "Download EPG(Excluding missing meta)", name:"submit" ,class: "btn btn-primary" %>
+  	<% end %>
+  </div>
+  <% elsif @error == "validation_errors" %>
+  <div class="col-md-6 col-md-offset-3">
+  	<h1> Validation Errors </h1>
+  	<p> @rowarraydisp </p>
+  	<%= form_for :epg do |form| %>
+	  	<%= form.submit "Download validation errors file", name:"submit" ,class: "btn btn-primary" %>
+	<% end %>
+  </div>
+  <% end %>
+  </div>
+</div>

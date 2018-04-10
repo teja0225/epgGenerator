@@ -1,0 +1,25 @@
+<div class="center jumbotron">
+  <div class="row">
+  <div class="col-md-6 col-md-offset-3">
+  <h1> Generate EPG </h1>
+	<div class="row">
+	  <div class="col-md-12 col-md-offset-0">
+	    <%= form_for :epg, url: "epg/epg_generator" , multipart: true do |form| %>
+
+	    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
+	    <div class = "orb">
+		  <%= form.label :Meta_file %>
+	      <%= form.file_field :meta, :required => true , :accept=>".xlsx"%> 
+	      <%= form.label :Schedule %>   
+	      <%= form.file_field :schedule, :required => true , :accept=>".xlsx"%>
+		  <%= form.label :template %>  
+		  <%= form.file_field :template, :required => true , :accept=>".xlsx"%>
+		</div>
+		  <%= form.submit "Generate EPG", name:"submit" ,class: "btn btn-primary" %>
+
+		<% end  %>
+	  </div>
+	</div>
+
+  </div>
+</div>
