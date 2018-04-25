@@ -1,6 +1,16 @@
+<header class="navbar navbar-fixed-top navbar-inverse">
+      <div class="container">
+        <nav>
+          <ul class="nav navbar-nav navbar-right">
+            <li><%= link_to "generate epg", "index" %></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
 <div class="center jumbotron">
   <div class="row">
-  <% if @error == "metafile" %>
+  <% if @err == "metafile" %>
   <div class="col-md-6 col-md-offset-3">
   <h2> Missing Meta </h2>
 	<table>
@@ -29,10 +39,36 @@
 	  <%= form.submit "Download EPG(Excluding missing meta)", name:"submit" ,class: "btn btn-primary" %>
   	<% end %>
   </div>
-  <% elsif @error == "validation_errors" %>
+  <% elsif @err == "validation_errors" %>
   <div class="col-md-6 col-md-offset-3">
   	<h1> Validation Errors </h1>
-  	<p> @rowarraydisp </p>
+  	<% @errors.each do |err| %>
+	  	<% if err.starts_with?("Date") %>
+	  		<% @date_err << err.split(" at ")[1] %>
+	  	<% else %>
+	  		<% @title_err << err.split(" at ")[1] %>
+	  	<% end %>
+  	<% end %>
+  	<table>
+  	<tbody>
+  	 <% if @date_err.length > 0 %>
+  	 <p> <%= @date %> </p>
+  		<% @date_err.each do |row| %>
+  		<tr>
+	     <td><%= row %></td>
+	    </tr>
+	    <% end %>
+	   <% end %>
+	   <% if @title_err.length > 0 %>
+	   <h3> <%= @title %> </h3>
+	    <% @title_err.each do |row| %>
+  		<tr>
+	     <td><%= row %></td>
+	    </tr>
+	    <% end %>
+	   <% end %>
+  		</tbody>
+  	</table>
   	<%= form_for :epg do |form| %>
 	  	<%= form.submit "Download validation errors file", name:"submit" ,class: "btn btn-primary" %>
 	<% end %>

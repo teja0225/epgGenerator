@@ -1,12 +1,7 @@
 <%= csrf_meta_tags %>
 <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
  <%= javascript_include_tag "application" 'data-turbolinks-track'=> true %>
-	<% flash.each do |key, value| %>
-	<% if value!="" %>
-    	<div class="alert alert-<%= key %>"><%= value %></div>
-    <% end %>
-    <% end %>
-
+	
   <div class="container">
 		<%= yield %> 
 	</div>

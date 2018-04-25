@@ -4,7 +4,7 @@
   <h1> Generate EPG </h1>
 	<div class="row">
 	  <div class="col-md-12 col-md-offset-0">
-	    <%= form_for :epg, url: "epg/epg_generator" , multipart: true do |form| %>
+	    <%= form_for :epg, url: {action: "epg_generator"} do |form| %>
 
 	    <%= hidden_field_tag :authenticity_token, form_authenticity_token %>
 	    <div class = "orb">

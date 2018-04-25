@@ -29,7 +29,7 @@ textarea {
 
 /* typography */
 
-h1, h2, h3, h4, h5, h6 {
+h1, h2, h4, h5, h6 {
   line-height: 1;
 }
 
@@ -48,40 +48,15 @@ h2 {
   font-weight: normal;
 }
 
+h3 {
+  font-size: 1.2em;
+  letter-spacing: -1px;
+  font-weight: bold;
+}
+
 p {
-  font-size: 1.1em;
-  line-height: 1.7em;
-}
-
-/* footer */
-
-footer {
-  margin-top: 45px;
-  padding-top: 5px;
-  border-top: 1px solid #eaeaea;
-  color: #777;
-}
-
-footer a {
-  color: #555;
-}
-
-footer a:hover {
-  color: #222;
-}
-
-footer small {
-  float: left;
-}
-
-footer ul {
-  float: right;
-  list-style: none;
-}
-
-footer ul li {
-  float: left;
-  margin-left: 15px;
+  font-size: 0.1em;
+  text-align: center;
 }
 
 /* mixins, variables, etc. */
@@ -166,4 +141,8 @@ th {
     text-align: left;
     background-color: #337ab7;
     color: white;
+}
+
+header {
+  margin-bottom : 30px;
 }

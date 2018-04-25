@@ -63,22 +63,19 @@ class EpgController < ApplicationController
 
       if metafile_size > 20 or validation_errors_file_size > 0
         if validation_errors_file_size > 0
-          file = File.open("#{Rails.root}/public/output/validation_errors.txt", "rb")
-          @rowarraydisp = file.read
-          @error = "validation_errors"
+          @date_err = Array.new
+          @title_err = Array.new
+          @title = "Title not of format [<title>,<season> <ep_num>/<tot_ep> <(rpt) or (P)>]"
+          @date = "Date not of format [DAY MMM DD YYYY]"
+          @err = "validation_errors"
         else
           @rowarraydisp = CSV.read("#{Rails.root}/public/output/meta_missing.csv")
-          @error = "metafile"
+          @err = "metafile"
         end
         render 'epg/result'
       elsif metafile_size <= 20 and validation_errors_file_size == 0
-        flash[:success] = "EPG generated successfully"
         download_EPG(month)
       end 
-  		
-  		#url = "http://127.0.0.1:3000/public/output/Country_SKY_EPG_6.xlsx"
-  		#data = open(url).read
-  		#send_data data, :disposition => 'attachment', :filename=>"Country_SKY_EPG_#{month}.xlsx"
     end
 	end
 
@@ -86,7 +83,7 @@ class EpgController < ApplicationController
     begin
       send_file "#{Rails.root}/public/output/meta_missing.csv", :disposition => 'attachment'
     rescue ex
-      flash[:error] = "error: #{ex.message}"
+      puts "error: #{ex.message}"
     end
   end
 
@@ -94,7 +91,7 @@ class EpgController < ApplicationController
     begin
       send_file "#{Rails.root}/public/output/validation_errors.txt", :disposition => 'attachment'
     rescue ex
-      flash[:error] = "error: #{ex.message}"
+      puts "error: #{ex.message}"
     end
   end
 
@@ -102,7 +99,7 @@ class EpgController < ApplicationController
     begin
       send_file "#{Rails.root}/public/output/Country_SKY_EPG_#{mon}.xlsx", :disposition => 'attachment'
     rescue ex
-      flash[:error] = "error: #{ex.message}"
+      puts "error: #{ex.message}"
     end 
   end
 
@@ -284,13 +281,11 @@ class EpgController < ApplicationController
           rescue => ex
             col_value = (sheet.nil? or sheet[ind+1].nil? or sheet[ind+1][col_num].nil?) ? nil : sheet[ind+1][col_num].value
             if col_value.nil? or col_value == " "
-              flash[:error] = "No data in column #{col_num} of sheet #{sheet_num}"
               puts "No data in column #{col_num} of sheet #{sheet_num}"
               break
             end
             raise ex
             puts "#{ex.message}"
-            flash[:error] = "Title: #{title} sheet: #{sheet_num} column: #{num}" 
             puts "Title: #{title} sheet: #{sheet_num} column: #{num}"
             exit
           end
@@ -378,7 +373,6 @@ class EpgController < ApplicationController
             elsif ex.message.include?("invalid date")
                 col_value = (sheet.nil? or sheet[ind+1].nil? or sheet[ind+1][col_num].nil?) ? nil : sheet[ind+1][col_num].value
                 if col_value.nil? or col_value == " "
-                  flash[:error] = "No data in column #{col_num} of sheet #{sheet_num}"
                   puts "No data in column #{col_num} of sheet #{sheet_num}"
                   break
                 end
