@@ -37,16 +37,14 @@ class EpgController < ApplicationController
     else
       
       FileUtils.rm_rf(Dir["#{Rails.root}/public/output/*"])
-      FileUtils.rm_rf(Dir["#{Rails.root}/public/*.xlsx"])
 
   		meta_file = "public/#{@epg['meta'].original_filename}"
   		schedule_file = "public/#{@epg['schedule'].original_filename}"
-  		template_file = "public/#{@epg['template'].original_filename}"
+  		template_file = "public/country_sky_template.xlsx"
   		output_dir = "#{Rails.root}/public/output"
 
   		FileUtils.cp("#{@epg['meta'].tempfile.path}","#{meta_file}")
   		FileUtils.cp("#{@epg['schedule'].tempfile.path}","#{schedule_file}")
-  		FileUtils.cp("#{@epg['template'].tempfile.path}","#{template_file}")
 
   		month = Date::MONTHNAMES.index(File.basename(schedule_file,File.extname(schedule_file)).split("_").last.capitalize)
       session[:passed_variable] = "#{month}"

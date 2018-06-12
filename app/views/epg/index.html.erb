@@ -12,8 +12,6 @@
 	      <%= form.file_field :meta, :required => true , :accept=>".xlsx"%> 
 	      <%= form.label :Schedule %>   
 	      <%= form.file_field :schedule, :required => true , :accept=>".xlsx"%>
-		  <%= form.label :template %>  
-		  <%= form.file_field :template, :required => true , :accept=>".xlsx"%>
 		</div>
 		  <%= form.submit "Generate EPG", name:"submit" ,class: "btn btn-primary" %>
 
