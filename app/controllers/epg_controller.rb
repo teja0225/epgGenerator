@@ -7,6 +7,7 @@ require 'open-uri'
 require 'csv'
 
 class EpgController < ApplicationController
+
 	DATE_COL = 0
   START_COL = 1
   TITLE_COL = 4
@@ -189,7 +190,7 @@ class EpgController < ApplicationController
 
   def parse(meta_path,schedule_path,template_path,month,output)
     @output_dir = output
-    puts "month: #{month}"
+    puts month
     @mnth = month
     metabook = RubyXL::Parser.parse(meta_path)
     @metasheet = metabook.worksheets[0]
@@ -230,7 +231,7 @@ class EpgController < ApplicationController
             end
             other = other.gsub(/\s\s+/," ")
             season,episode,repeat = other.split(" ")
-            season,episode,repeat = "",season,episode if season and season.include?("/")
+            season,episode,repeat = "",season,episode if season and season.include?("/") and !episode.include?("/")
             current_episode,total_episode = episode.split("/")
             current_episode = current_episode.gsub("(","").gsub(")","")
             cur_time_val = sheet[ind][0].value if sheet[ind] and sheet[ind][0]
@@ -366,7 +367,7 @@ class EpgController < ApplicationController
             end
             ind += 1
           rescue => ex
-            if ex.message.include?("undefined method `gsub'")
+            if ex.message.include?("undefined method `gsub'") or ex.message.include?("undefined method `split'")
               @errors << "Title not of format [<title>,<season> <ep_num>/<tot_ep> <(rpt) or (P)>] at Title: #{title} sheet: #{sheet_num+1} column: #{num+1} Row: #{ind+1}"
             elsif ex.message.include?("invalid date")
                 col_value = (sheet.nil? or sheet[ind+1].nil? or sheet[ind+1][col_num].nil?) ? nil : sheet[ind+1][col_num].value
